@@ -27,6 +27,7 @@ let package = Package(
             name: "DZDataAnalytics",
             dependencies: [
                 .product(name: "FirebaseAnalytics", package: "Firebase"),
+                .product(name: "FirebaseAuth", package: "Firebase"),
                 .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
             ]),
     ]
