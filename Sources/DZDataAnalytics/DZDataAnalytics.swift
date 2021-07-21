@@ -142,7 +142,7 @@ extension DZDataAnalytics {
     }
     
     private func isFirstInstall() -> Bool {
-        if let _ = DZDataAnalytics.AppData.shared.keychain.bool(forKey: DZDataAnalytics.AppData.Keys.keychainID.rawValue) {
+        if let _ = DZDataAnalytics.AppData.shared.keychain.string(forKey: DZDataAnalytics.AppData.Keys.keychainID.rawValue) {
             return false
         }
         return true

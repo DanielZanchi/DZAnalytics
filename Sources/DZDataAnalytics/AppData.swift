@@ -22,8 +22,8 @@ extension DZDataAnalytics {
         var keychain: KeychainWrapper!
         
         private init() {
-            self.defaults = UserDefaults.standard
-            self.keychain = KeychainWrapper.standard
+            self.defaults = UserDefaults(suiteName: "\(Bundle.main.bundleIdentifier ?? "").DZAnalytics")
+            self.keychain = KeychainWrapper(serviceName: "\(Bundle.main.bundleIdentifier ?? "").DZAnalytics")
         }
         
         func saveData() {
