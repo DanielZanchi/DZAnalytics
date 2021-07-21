@@ -30,11 +30,11 @@ public class DZDataAnalytics {
             AppData.shared.getData()
         }
         
-        func sendEvent(withName name: String, parameters: [String: Any]? = nil) {
+        public func sendEvent(withName name: String, parameters: [String: Any]? = nil) {
             Analytics.logEvent(name, parameters: parameters)
         }
         
-        func logFirstOpen() {
+        public func logFirstOpen() {
             AnalyticsVars.sessionCount += 1
             
             switch installState() {
@@ -80,20 +80,20 @@ public class DZDataAnalytics {
             AppData.shared.keychain.set(currentAppVersion, forKey: AppData.Keys.appVersion.rawValue)
         }
         
-        func setPremium(_ value: Bool) {
+        public func setPremium(_ value: Bool) {
             self.isPremium = value
             AppData.shared.saveData()
             setDefaultParams()
         }
         
-        func setOriginalTransId(_ id: String?) {
+        public func setOriginalTransId(_ id: String?) {
             guard let id = id else { return }
             AnalyticsVars.originalTransId = id
             AppData.shared.saveData()
             setDefaultParams()
         }
         
-        func didPurchase(product: SKProduct) {
+        public func didPurchase(product: SKProduct) {
             let currencyCode = product.priceLocale.currencyCode ?? ""
             let currencySymbol = product.priceLocale.currencySymbol ?? ""
             let localPrice = product.price.stringValue
