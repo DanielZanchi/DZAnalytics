@@ -1,14 +1,11 @@
 import FirebaseAnalytics
 import SwiftKeychainWrapper
 import Foundation
-
-protocol AnalyticsManagerDelegate: NSObject {
-    func setIsPremium(_ value: Bool)
-}
+import StoreKit
 
 struct DZDataAnalytics {
     
-    struct AnalyticsManager {
+    class AnalyticsManager {
         
         enum AnalyticsVars {
             static var sessionCount: Int = 0
@@ -27,7 +24,6 @@ struct DZDataAnalytics {
         }
 
         static let shared = AnalyticsManager()
-        weak var delegate: AnalyticsManagerDelegate?
         private(set) var isPremium = false
         
         private init() {
@@ -82,6 +78,33 @@ struct DZDataAnalytics {
             
             let currentAppVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
             AppData.shared.keychain.set(currentAppVersion, forKey: AppData.Keys.appVersion.rawValue)
+        }
+        
+        func setPremium(_ value: Bool) {
+            self.isPremium = value
+            AppData.shared.saveData()
+            setDefaultParams()
+        }
+        
+        func setOriginalTransId(_ id: String?) {
+            guard let id = id else { return }
+            AnalyticsVars.originalTransId = id
+            AppData.shared.saveData()
+            setDefaultParams()
+        }
+        
+        func didPurchase(product: SKProduct) {
+            let currencyCode = product.priceLocale.currencyCode ?? ""
+            let currencySymbol = product.priceLocale.currencySymbol ?? ""
+            let localPrice = product.price.stringValue
+            let price = product.localizedPrice ?? ""
+            sendEvent(withName: "ce_did_purchase", parameters: [
+                "cp_product_id": product.productIdentifier,
+                "cp_currency_code": currencyCode,
+                "cp_currency_symbol": currencySymbol,
+                "cp_local_price": localPrice,
+                "cp_price": price
+            ])
         }
         
         private func setDefaultParams() {
