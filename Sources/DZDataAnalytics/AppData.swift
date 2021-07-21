@@ -27,16 +27,16 @@ extension DZDataAnalytics {
         }
         
         func saveData() {
-            defaults.set(AnalyticsManager.AnalyticsVars.userDefaultsID, forKey: Keys.userDefaultsID.rawValue)
+            defaults.set(DZDataAnalytics.AnalyticsVars.userDefaultsID, forKey: Keys.userDefaultsID.rawValue)
             
-            keychain.set(AnalyticsManager.shared.isPremium, forKey: Keys.isPremium.rawValue)
-            keychain.set(AnalyticsManager.AnalyticsVars.keychainID, forKey: Keys.keychainID.rawValue)
-            keychain.set(AnalyticsManager.AnalyticsVars.sessionCount, forKey: Keys.sessionCount.rawValue)
+            keychain.set(DZAnalytics.isPremium, forKey: Keys.isPremium.rawValue)
+            keychain.set(DZDataAnalytics.AnalyticsVars.keychainID, forKey: Keys.keychainID.rawValue)
+            keychain.set(DZDataAnalytics.AnalyticsVars.sessionCount, forKey: Keys.sessionCount.rawValue)
         }
         
         func getData() {
             if let sessionCount = keychain.integer(forKey: Keys.sessionCount.rawValue) {
-                AnalyticsManager.AnalyticsVars.sessionCount = sessionCount
+                DZDataAnalytics.AnalyticsVars.sessionCount = sessionCount
             }
         }
     }

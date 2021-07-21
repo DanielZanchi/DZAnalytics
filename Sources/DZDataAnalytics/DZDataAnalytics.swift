@@ -3,9 +3,9 @@ import SwiftKeychainWrapper
 import Foundation
 import StoreKit
 
-struct DZDataAnalytics {
-    
-    class AnalyticsManager {
+public let DZAnalytics = DZDataAnalytics.shared
+
+public class DZDataAnalytics {
         
         enum AnalyticsVars {
             static var sessionCount: Int = 0
@@ -23,7 +23,7 @@ struct DZDataAnalytics {
             case ce_first_open, ce_session_start, ce_app_update, ce_subscription_expired
         }
 
-        static let shared = AnalyticsManager()
+        public static let shared = DZDataAnalytics()
         private(set) var isPremium = false
         
         private init() {
@@ -122,9 +122,8 @@ struct DZDataAnalytics {
             ])
         }
     }
-}
 
-extension DZDataAnalytics.AnalyticsManager {
+extension DZDataAnalytics {
     
     enum InstallState {
         case firstInstall, reinstall, installed
