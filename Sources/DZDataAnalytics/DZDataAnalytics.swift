@@ -16,7 +16,7 @@ public class DZDataAnalytics {
         }
         
         enum parametersKeys: String {
-            case cp_session_id, cp_session_count, cp_preferred_language, cp_user_region, cp_isPremium, cp_countryId, cp_keychainID, cp_originalTransId, cp_app_version, cp_is_fresh_install, cp_old_app_version, cp_first_install_date, cp_subscription_expire_date
+            case cp_session_id, cp_session_count, cp_preferred_language, cp_user_region, cp_isPremium, cp_countryId, cp_keychainID, cp_originalTransId, cp_app_version, cp_is_fresh_install, cp_old_app_version, cp_first_install_date, cp_subscription_expire_date, cp_installed_before_gca
         }
         
         enum eventNameKeys: String {
@@ -47,6 +47,7 @@ public class DZDataAnalytics {
                 
                 Analytics.logEvent(eventNameKeys.ce_first_open.rawValue, parameters: [
                     parametersKeys.cp_is_fresh_install.rawValue: true,
+                    parametersKeys.cp_installed_before_gca.rawValue: false,
                     parametersKeys.cp_first_install_date.rawValue: Date().getStringDate(format: "yyyy-MM-dd HH:mm:ss Z")
                 ])
                 
@@ -59,6 +60,7 @@ public class DZDataAnalytics {
                 
                 Analytics.logEvent(eventNameKeys.ce_first_open.rawValue, parameters: [
                     parametersKeys.cp_is_fresh_install.rawValue: false,
+                    parametersKeys.cp_installed_before_gca.rawValue: false
                 ])
                 Analytics.logEvent(eventNameKeys.ce_session_start.rawValue, parameters: nil)
                 
