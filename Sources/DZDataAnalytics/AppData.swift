@@ -13,7 +13,7 @@ extension DZDataAnalytics {
     class AppData {
         
         enum Keys: String {
-            case userDefaultsID, isPremium, appVersion, keychainID, sessionCount, originalTransId
+            case userDefaultsID, isPremium, appVersion, keychainID, sessionCount, originalTransId, didRequestAdAttribution
         }
         
         static let shared: AppData = AppData()

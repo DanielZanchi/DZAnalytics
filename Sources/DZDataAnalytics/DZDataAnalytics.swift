@@ -16,11 +16,11 @@ public class DZDataAnalytics {
     }
     
     enum parametersKeys: String {
-        case cp_session_id, cp_session_count, cp_preferred_language, cp_user_region, cp_isPremium, cp_countryId, cp_keychainID, cp_originalTransId, cp_app_version, cp_is_fresh_install, cp_old_app_version, cp_first_install_date, cp_subscription_expire_date, cp_installed_before_gca, cp_product_id
+        case cp_session_id, cp_session_count, cp_preferred_language, cp_user_region, cp_isPremium, cp_countryId, cp_keychainID, cp_originalTransId, cp_app_version, cp_is_fresh_install, cp_old_app_version, cp_first_install_date, cp_subscription_expire_date, cp_installed_before_gca, cp_product_id, cp_tracking_status
     }
     
     enum eventNameKeys: String {
-        case ce_first_open, ce_session_start, ce_app_update, ce_subscription_expired
+        case ce_first_open, ce_session_start, ce_app_update, ce_subscription_expired, ce_search_event_tracking, ce_tracking_change_status
     }
     
     public static let shared = DZDataAnalytics()
@@ -117,7 +117,7 @@ public class DZDataAnalytics {
                     ])
     }
     
-    private func setDefaultParams() {
+    func setDefaultParams() {
         Analytics.setUserID(AnalyticsVars.keychainID)
         Analytics.setDefaultEventParameters([
             parametersKeys.cp_session_id.rawValue: AnalyticsVars.sessionId,
