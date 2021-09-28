@@ -12,7 +12,7 @@ import FirebaseAnalytics
 
 extension DZDataAnalytics {
     
-    func requestiAdAttribution() {
+    public func requestiAdAttribution() {
         
         func getAttribution() {
             ADClient.shared().requestAttributionDetails({ (attributionDetails, error) in
