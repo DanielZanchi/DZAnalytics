@@ -12,6 +12,7 @@ import FirebaseAnalytics
 
 extension DZDataAnalytics {
     
+    /// if calling this you should add this to info.plist: "NSUserTrackingUsageDescription" : "Use you device information for performance statistics to improve product stability"
     public func requestiAdAttribution() {
         
         func getAttribution() {
