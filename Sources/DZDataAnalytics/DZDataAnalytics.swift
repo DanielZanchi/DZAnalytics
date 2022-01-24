@@ -34,10 +34,13 @@ public class DZDataAnalytics {
         Analytics.logEvent(name, parameters: parameters)
     }
     
-    public func logFirstOpen() {
+    @discardableResult
+    public func logFirstOpen() -> InstallState {
         AnalyticsVars.sessionCount += 1
         
-        switch installState() {
+        let installState = installState()
+        
+        switch installState {
         case .firstInstall:
             //I don't have a keychainID (so neither a userDefaultsID). I will create them
             AnalyticsVars.keychainID = UUID().uuidString
@@ -80,6 +83,8 @@ public class DZDataAnalytics {
         
         let currentAppVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
         AppData.shared.keychain.set(currentAppVersion, forKey: AppData.Keys.appVersion.rawValue)
+        
+        return installState
     }
     
     func setDefaultParams() {
@@ -96,11 +101,15 @@ public class DZDataAnalytics {
             parametersKeys.cp_app_version.rawValue: (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
         ])
     }
+    
+    public func getKeychainID() -> String {
+        return AnalyticsVars.keychainID
+    }
 }
 
 extension DZDataAnalytics {
     
-    enum InstallState {
+    public enum InstallState {
         case firstInstall, reinstall, installed
     }
     
