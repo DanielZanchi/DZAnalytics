@@ -109,7 +109,7 @@ public class DZDataAnalytics {
 
 extension DZDataAnalytics {
     
-    public enum InstallState {
+    public enum InstallState: String {
         case firstInstall, reinstall, installed
     }
     
