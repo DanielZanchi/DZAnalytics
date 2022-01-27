@@ -13,6 +13,7 @@ public class DZDataAnalytics {
         static var keychainID: String = ""
         static var userDefaultsID: String = ""
         static var originalTransId: String = ""
+        static var didSendReceipt = false
     }
     
     enum parametersKeys: String {

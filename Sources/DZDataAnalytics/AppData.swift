@@ -13,7 +13,7 @@ extension DZDataAnalytics {
     class AppData {
         
         enum Keys: String {
-            case userDefaultsID, isPremium, appVersion, keychainID, sessionCount, originalTransId, didRequestAdAttribution
+            case userDefaultsID, isPremium, appVersion, keychainID, sessionCount, originalTransId, didRequestAdAttribution, didSendReceipt
         }
         
         static let shared: AppData = AppData()
@@ -33,6 +33,7 @@ extension DZDataAnalytics {
             keychain.set(DZDataAnalytics.AnalyticsVars.keychainID, forKey: Keys.keychainID.rawValue)
             keychain.set(DZDataAnalytics.AnalyticsVars.sessionCount, forKey: Keys.sessionCount.rawValue)
             keychain.set(DZDataAnalytics.AnalyticsVars.originalTransId, forKey: Keys.originalTransId.rawValue)
+            keychain.set(DZDataAnalytics.AnalyticsVars.didSendReceipt, forKey: Keys.didSendReceipt.rawValue)
         }
         
         func getData() {

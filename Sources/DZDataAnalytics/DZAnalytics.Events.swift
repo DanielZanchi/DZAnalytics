@@ -21,5 +21,24 @@ extension DZDataAnalytics {
             "cp_is_testing": isTesting
         ])
     }
-
+    
+    public func sendReceiptInfos(_ receipt: [String: AnyObject]) {
+        if AnalyticsVars.didSendReceipt == false {
+            if let receiptInfo = receipt["receipt"] {
+                if let originalPurchaseDate = receiptInfo["original_purchase_date"] as? String,
+                   let downloadId = receiptInfo["download_id"] as? Int,
+                   let originalAppVersion = receiptInfo["original_application_version"] as? String {
+                    sendEvent(withName: "ce_app_store_receipt", parameters: [
+                        "cp_r_original_purchase_date": originalPurchaseDate,
+                        "cp_r_download_id": downloadId,
+                        "cp_r_original_application_version": originalAppVersion
+                    ])
+                    
+                    AnalyticsVars.didSendReceipt = true
+                    DZDataAnalytics.AppData.shared.saveData()
+                }
+            }
+        }
+    }
+    
 }
