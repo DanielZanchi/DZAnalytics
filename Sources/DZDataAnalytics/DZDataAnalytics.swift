@@ -135,6 +135,7 @@ extension DZDataAnalytics {
     private func isReinstall() -> Bool {
         if let keychainID = DZDataAnalytics.AppData.shared.keychain.string(forKey: DZDataAnalytics.AppData.Keys.keychainID.rawValue) {
             if let _ = DZDataAnalytics.AppData.shared.defaults.string(forKey: DZDataAnalytics.AppData.Keys.userDefaultsID.rawValue) {
+                AnalyticsVars.keychainID = keychainID
                 return false
             }
             AnalyticsVars.keychainID = keychainID
