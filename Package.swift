@@ -18,6 +18,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", from: "8.0.0"),
+        .package(name: "SwiftyStoreKit", url: "https://github.com/bizz84/SwiftyStoreKit.git", from: "0.16.3"),
         .package(name: "SwiftKeychainWrapper", url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1")
     ],
     targets: [
@@ -28,6 +29,7 @@ let package = Package(
             dependencies: [
                 .product(name: "FirebaseAnalytics", package: "Firebase"),
                 .product(name: "FirebaseAuth", package: "Firebase"),
+                .product(name: "SwiftyStoreKit", package: "SwiftyStoreKit"),
                 .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
             ]),
     ]
