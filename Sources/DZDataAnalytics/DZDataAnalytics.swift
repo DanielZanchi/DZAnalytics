@@ -31,8 +31,19 @@ public class DZDataAnalytics {
         AppData.shared.getData()
     }
     
-    public func sendEvent(withName name: String, parameters: [String: Any]? = nil) {
+    public func sendEvent(withName name: String, parameters: [String: Any]? = nil, removingDefault: Bool = false) {
+        if removingDefault {
+            Analytics.setDefaultEventParameters(nil)
+            Analytics.setDefaultEventParameters([
+                parametersKeys.cp_keychainID.rawValue: AnalyticsVars.keychainID,
+            ])
+        }
+        
         Analytics.logEvent(name, parameters: parameters)
+        
+        if removingDefault {
+            setDefaultParams()
+        }
     }
     
     @discardableResult
