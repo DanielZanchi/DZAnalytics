@@ -23,18 +23,25 @@ extension DZDataAnalytics {
         setDefaultParams()
     }
     
-    public func didPurchase(product: SKProduct) {
+    public func didPurchase(product: SKProduct, addParameters: [String: Any]? = nil) {
         let currencyCode = product.priceLocale.currencyCode ?? ""
         let currencySymbol = product.priceLocale.currencySymbol ?? ""
         let localPrice = product.price.stringValue
         let price = product.localizedPrice ?? ""
-        sendEvent(withName: "ce_did_purchase", parameters: [
+        
+        var parameters: [String: Any] =             [
             "cp_product_id": product.productIdentifier,
             "cp_currency_code": currencyCode,
             "cp_currency_symbol": currencySymbol,
             "cp_local_price": localPrice,
             "cp_price": price
-        ])
+        ]
+        
+        if let addParameters = addParameters {
+            addParameters.forEach({parameters[$0] = $1})
+        }
+        
+        sendEvent(withName: "ce_did_purchase", parameters: parameters)
     }
     
     public func didExpire(productId: String, expireDate: Date) {
