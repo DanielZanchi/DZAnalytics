@@ -7,14 +7,50 @@
 
 import AppTrackingTransparency
 import iAd
+import AdServices
 import Foundation
 import FirebaseAnalytics
 
 extension DZDataAnalytics {
     
+    //This doesn't need the tracking auth from the user. If the user didn't give consent it will send a standard payload.s
+    func sendSearchAdsAttribution(afterTrackingAuthorization: Bool = false) {
+        if #available(iOS 14.3, *) {
+            do {
+                let attributionToken = try AAAttribution.attributionToken()
+                var request = URLRequest(url: URL(string: "https://api-adservices.apple.com/api/v1/")!)
+                request.httpMethod = "POST"
+                request.setValue("text/plain", forHTTPHeaderField: "Content-Type")
+                request.httpBody = Data(attributionToken.utf8)
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let error = error {
+                        DZAnalytics.sendEvent(withName: "ce_seatch_ad_error", parameters: ["error": error.localizedDescription])
+                        print("there was an error with AAAttribution - \(error.localizedDescription)")
+                        return
+                    }
+                    if let data = data,
+                       let attribution = try? JSONDecoder().decode(AAAttributionModel.self, from: data) {
+                        DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: [
+                            "cp_a_attribution": attribution.attribution ?? false,
+                            "cp_a_campaign_id": attribution.campaignID ?? 0,
+                            "cp_a_click_date": attribution.clickDate ?? "",
+                            "cp_a_ad_group_id": attribution.adGroupID ?? 0,
+                            "cp_a_country_region": attribution.countryOrRegion ?? "",
+                            "cp_a_keyword_id": attribution.keywordID ?? -1,
+                            "cp_a_ad_id": attribution.adID ?? 0
+                        ])
+                    }
+                }.resume()
+                
+            } catch {
+                DZAnalytics.sendEvent(withName: "ce_seatch_ad_error", parameters: ["error": error.localizedDescription])
+                print("There was an errore getting the attribution token: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     /// if calling this you should add this to info.plist: "NSUserTrackingUsageDescription" : "Use you device information for performance statistics to improve product stability"
     public func requestiAdAttribution() {
-        
         func getAttribution() {
             ADClient.shared().requestAttributionDetails({ (attributionDetails, error) in
                 if let error = error {
@@ -49,7 +85,7 @@ extension DZDataAnalytics {
                 switch status {
                 case .authorized:
                     getAttribution()
-                    
+                    self.sendSearchAdsAttribution(afterTrackingAuthorization: true)
                     self.sendEvent(withName: eventNameKeys.ce_tracking_change_status.rawValue, parameters: [
                         parametersKeys.cp_tracking_status.rawValue: "authorized"
                     ])

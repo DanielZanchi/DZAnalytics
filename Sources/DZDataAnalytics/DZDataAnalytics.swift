@@ -67,6 +67,7 @@ public class DZDataAnalytics {
             ])
             
             Analytics.logEvent(eventNameKeys.ce_session_start.rawValue, parameters: nil)
+            self.sendSearchAdsAttribution()
         case .reinstall:
             //I am missing a userDefaultsID. I will sync it with the keychainID
             AnalyticsVars.userDefaultsID = AnalyticsVars.keychainID
@@ -78,7 +79,7 @@ public class DZDataAnalytics {
                 parametersKeys.cp_installed_before_gca.rawValue: false
             ])
             Analytics.logEvent(eventNameKeys.ce_session_start.rawValue, parameters: nil)
-            
+            self.sendSearchAdsAttribution()
         case .installed:
             AppData.shared.saveData()
             setDefaultParams()
