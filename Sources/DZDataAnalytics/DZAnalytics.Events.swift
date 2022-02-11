@@ -31,10 +31,11 @@ extension DZDataAnalytics {
     }
     
     
-    public func purchaseInitialized() {
+    public func purchaseInitialized(productId: String) {
         DZAnalytics.sendEvent(withName: "ce_purchase_initialized", parameters: [
             "cp_paywall_name": AnalyticsDataProvider.current.get()?.paywallName ?? "",
-            "cp_trigger": AnalyticsDataProvider.current.get()?.trigger ?? ""
+            "cp_trigger": AnalyticsDataProvider.current.get()?.trigger ?? "",
+            "cp_product_id": productId
         ])
     }
     
