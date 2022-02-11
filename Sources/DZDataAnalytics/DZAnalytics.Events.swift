@@ -30,6 +30,14 @@ extension DZDataAnalytics {
         sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
     }
     
+    
+    public func purchaseInitialized() {
+        DZAnalytics.sendEvent(withName: "ce_purchase_initialized", parameters: [
+            "cp_paywall_name": AnalyticsDataProvider.current.get()?.paywallName ?? "",
+            "cp_trigger": AnalyticsDataProvider.current.get()?.trigger ?? ""
+        ])
+    }
+    
     public func didSeePaywall(withName name: String, isTesting: Bool, trigger: String) {
         sendEvent(withName: "ce_paywall_view", parameters: [
             "cp_paywall_name": name,
