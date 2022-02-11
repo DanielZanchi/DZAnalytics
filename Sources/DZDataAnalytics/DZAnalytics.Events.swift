@@ -10,10 +10,24 @@ import SwiftyStoreKit
 
 extension DZDataAnalytics {
     
+    @available(*, deprecated, message: "Use setTestSegmentation instead")
     public func setTestPaywall(withName name: String) {
         sendEvent(withName: "ce_begin_paywall_test", parameters: [
             "cp_paywall_name": name
         ])
+    }
+    
+    public func setTestSegmnentation(paywallName: String?, surveyEnabled: Bool?) {
+        var parameters: [String: Any] = [:]
+        if let paywallName = paywallName {
+            parameters["cp_experiment_paywall_name"] = paywallName
+        }
+        if let surveyEnabled = surveyEnabled {
+            parameters["cp_experiment_onboarding_survey"] = surveyEnabled
+            
+        }
+        
+        sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
     }
     
     public func didSeePaywall(withName name: String, isTesting: Bool, trigger: String) {
