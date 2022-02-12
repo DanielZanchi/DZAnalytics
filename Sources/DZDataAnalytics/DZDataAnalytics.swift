@@ -118,6 +118,10 @@ public class DZDataAnalytics {
     public func getKeychainID() -> String {
         return AnalyticsVars.keychainID
     }
+    
+    public func resetForTest() {
+        AppData.shared.reset()
+    }
 }
 
 extension DZDataAnalytics {

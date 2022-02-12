@@ -45,6 +45,12 @@ extension DZDataAnalytics {
                 DZDataAnalytics.AnalyticsVars.originalTransId = originalTransId
             }
         }
+        
+        func reset() {
+            let domain = Bundle.main.bundleIdentifier!
+            self.defaults.removePersistentDomain(forName: domain)
+            self.keychain.removeAllKeys()
+        }
     }
     
 }
