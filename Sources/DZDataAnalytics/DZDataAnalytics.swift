@@ -46,13 +46,13 @@ public class DZDataAnalytics {
             AppData.shared.saveData()
             setDefaultParams()
             
-            Analytics.logEvent(eventNameKeys.ce_first_open.rawValue, parameters: [
+            sendEvent(withName: eventNameKeys.ce_first_open.rawValue, parameters: [
                 parametersKeys.cp_is_fresh_install.rawValue: true,
                 parametersKeys.cp_installed_before_gca.rawValue: false,
                 parametersKeys.cp_first_install_date.rawValue: Date().getStringDate(format: "yyyy-MM-dd HH:mm:ss Z")
             ])
             
-            Analytics.logEvent(eventNameKeys.ce_session_start.rawValue, parameters: nil)
+            sendEvent(withName: eventNameKeys.ce_session_start.rawValue, parameters: nil)
             self.sendSearchAdsAttribution()
         case .reinstall:
             //I am missing a userDefaultsID. I will sync it with the keychainID
@@ -60,21 +60,21 @@ public class DZDataAnalytics {
             AppData.shared.saveData()
             setDefaultParams()
             
-            Analytics.logEvent(eventNameKeys.ce_first_open.rawValue, parameters: [
+            sendEvent(withName: eventNameKeys.ce_first_open.rawValue, parameters: [
                 parametersKeys.cp_is_fresh_install.rawValue: false,
                 parametersKeys.cp_installed_before_gca.rawValue: false
             ])
-            Analytics.logEvent(eventNameKeys.ce_session_start.rawValue, parameters: nil)
+            sendEvent(withName: eventNameKeys.ce_session_start.rawValue, parameters: nil)
             self.sendSearchAdsAttribution()
         case .installed:
             AppData.shared.saveData()
             setDefaultParams()
             
-            Analytics.logEvent(eventNameKeys.ce_session_start.rawValue, parameters: nil)
+            sendEvent(withName: eventNameKeys.ce_session_start.rawValue, parameters: nil)
             
             if didUpdate() {
                 let oldVersion = AppData.shared.keychain.string(forKey: AppData.Keys.appVersion.rawValue) ?? ""
-                Analytics.logEvent(eventNameKeys.ce_app_update.rawValue, parameters: [
+                sendEvent(withName: eventNameKeys.ce_app_update.rawValue, parameters: [
                     parametersKeys.cp_old_app_version.rawValue: oldVersion
                 ])
             }
