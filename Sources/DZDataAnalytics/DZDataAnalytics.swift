@@ -97,7 +97,7 @@ public class DZDataAnalytics {
             parametersKeys.cp_isPremium.rawValue: isPremium,
             parametersKeys.cp_countryId.rawValue: Locale.current.regionCode ?? "",
             parametersKeys.cp_keychainID.rawValue: AnalyticsVars.keychainID,
-//            parametersKeys.cp_originalTransId.rawValue: AnalyticsVars.originalTransId,
+            parametersKeys.cp_originalTransId.rawValue: AnalyticsVars.originalTransId,
             parametersKeys.cp_app_version.rawValue: (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
         ]
         
