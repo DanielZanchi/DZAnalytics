@@ -25,7 +25,7 @@ public class DZDataAnalytics {
     }
     
     public static let shared = DZDataAnalytics()
-    let eventSemaphore: DispatchSemaphore = DispatchSemaphore(value: 10)
+    let eventSemaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
     var isPremium = false
     
     private init() {
@@ -102,9 +102,9 @@ public class DZDataAnalytics {
         ]
         
         parameters = parameters.filter({($0.value as? String) != nil})
-        parameters = parameters.filter({($0.value as? String) != ""})
+        let defaultPars = parameters.filter({($0.value as? String) != ""})
 
-        Analytics.setDefaultEventParameters(parameters)
+        Analytics.setDefaultEventParameters(defaultPars)
     }
     
     public func getKeychainID() -> String {
