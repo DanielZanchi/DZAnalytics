@@ -60,7 +60,7 @@ extension DZDataAnalytics {
     }
     
     public func didSeePaywall(withName name: String, isTesting: Bool, trigger: String) {
-        sendEvent(withName: "ce_paywall_view", parameters: [
+        sendEvent(withName: "ce_paywall_appear", parameters: [
             "cp_paywall_name": name,
             "cp_is_testing": isTesting,
             "cp_trigger": trigger
