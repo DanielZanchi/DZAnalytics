@@ -88,7 +88,8 @@ public class DZDataAnalytics {
     
     func setDefaultParams() {
         Analytics.setUserID(AnalyticsVars.keychainID)
-        Analytics.setDefaultEventParameters([
+        
+        var parameters: [String: Any] = [
             parametersKeys.cp_session_id.rawValue: AnalyticsVars.sessionId,
             parametersKeys.cp_session_count.rawValue: AnalyticsVars.sessionCount,
             parametersKeys.cp_preferred_language.rawValue: Locale.preferredLanguages.first ?? "",
@@ -98,7 +99,12 @@ public class DZDataAnalytics {
             parametersKeys.cp_keychainID.rawValue: AnalyticsVars.keychainID,
             parametersKeys.cp_originalTransId.rawValue: AnalyticsVars.originalTransId,
             parametersKeys.cp_app_version.rawValue: (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
-        ])
+        ]
+        
+        parameters = parameters.filter({($0.value as? String) != nil})
+        parameters = parameters.filter({($0.value as? String) != ""})
+
+        Analytics.setDefaultEventParameters(parameters)
     }
     
     public func getKeychainID() -> String {
