@@ -7,8 +7,28 @@
 
 import Foundation
 import SwiftyStoreKit
+import FirebaseAnalytics
 
 extension DZDataAnalytics {
+    
+    public func sendEvent(withName name: String, parameters: [String: Any]? = nil, removingDefault: Bool = false) {
+        DispatchQueue(label: "DZAnalytics.eventLogger").async {
+            self.eventSemaphore.wait()
+            if removingDefault {
+                Analytics.setDefaultEventParameters(nil)
+                Analytics.setDefaultEventParameters([
+                    parametersKeys.cp_keychainID.rawValue: AnalyticsVars.keychainID,
+                ])
+            }
+            
+            Analytics.logEvent(name, parameters: parameters)
+            
+            if removingDefault {
+                self.setDefaultParams()
+            }
+            self.eventSemaphore.signal()
+        }
+    }
     
     @available(*, deprecated, message: "Use setTestSegmentation instead")
     public func setTestPaywall(withName name: String) {

@@ -25,25 +25,11 @@ public class DZDataAnalytics {
     }
     
     public static let shared = DZDataAnalytics()
+    let eventSemaphore: DispatchSemaphore = DispatchSemaphore(value: 10)
     var isPremium = false
     
     private init() {
         AppData.shared.getData()
-    }
-    
-    public func sendEvent(withName name: String, parameters: [String: Any]? = nil, removingDefault: Bool = false) {
-        if removingDefault {
-            Analytics.setDefaultEventParameters(nil)
-            Analytics.setDefaultEventParameters([
-                parametersKeys.cp_keychainID.rawValue: AnalyticsVars.keychainID,
-            ])
-        }
-        
-        Analytics.logEvent(name, parameters: parameters)
-        
-        if removingDefault {
-            setDefaultParams()
-        }
     }
     
     @discardableResult
