@@ -13,7 +13,7 @@ extension DZDataAnalytics {
     
     public func sendEvent(withName name: String, parameters: [String: Any]? = nil, removingDefault: Bool = false) {
         DispatchQueue(label: "DZAnalytics.eventLogger").async {
-            _=self.eventSemaphore.wait(timeout: .now() + 3)
+            self.eventSemaphore.wait()
             print("******** event logged")
             if removingDefault {
                 Analytics.setDefaultEventParameters(nil)
@@ -28,9 +28,10 @@ extension DZDataAnalytics {
                 self.setDefaultParams()
             }
             
+            DispatchQueue(label: "DZAnalytics.eventLogger").asyncAfter(deadline: .now() + 2) {
+                self.eventSemaphore.signal()
+            }
             
-            
-//            self.eventSemaphore.wait
         }
     }
     
