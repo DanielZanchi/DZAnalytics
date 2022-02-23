@@ -5,6 +5,7 @@
 //  Created by Daniel Zanchi on 28/09/21.
 //
 
+import UIKit
 import AppTrackingTransparency
 import iAd
 import AdServices
@@ -15,6 +16,10 @@ extension DZDataAnalytics {
     
     //This doesn't need the tracking auth from the user. If the user didn't give consent it will send a standard payload.s
     func sendSearchAdsAttribution(afterTrackingAuthorization: Bool = false) {
+        DZAnalytics.sendEvent(withName: "ce_will_ask_ad_attribution", parameters: [
+            "cp_ios_version": UIDevice.current.systemVersion
+        ], removingDefault: false)
+        
         if #available(iOS 14.3, *) {
             do {
                 let attributionToken = try AAAttribution.attributionToken()
@@ -24,28 +29,44 @@ extension DZDataAnalytics {
                 request.httpBody = Data(attributionToken.utf8)
                 URLSession.shared.dataTask(with: request) { data, response, error in
                     if let error = error {
-                        DZAnalytics.sendEvent(withName: "ce_seatch_ad_error", parameters: ["error": error.localizedDescription])
+                        DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: ["cp_error": error.localizedDescription])
                         print("there was an error with AAAttribution - \(error.localizedDescription)")
                         return
                     }
-                    if let data = data,
-                       let attribution = try? JSONDecoder().decode(AAAttributionModel.self, from: data) {
-                        DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: [
-                            "cp_a_attribution": attribution.attribution ?? false,
-                            "cp_a_campaign_id": attribution.campaignID ?? 0,
-                            "cp_a_click_date": attribution.clickDate ?? "",
-                            "cp_a_ad_group_id": attribution.adGroupID ?? 0,
-                            "cp_a_country_region": attribution.countryOrRegion ?? "",
-                            "cp_a_keyword_id": attribution.keywordID ?? -1,
-                            "cp_a_ad_id": attribution.adID ?? 0
-                        ])
+                    if let data = data {
+                        do {
+                            let attribution = try JSONDecoder().decode(AAAttributionModel.self, from: data)
+                            DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: [
+                                "cp_a_attribution": attribution.attribution ?? false,
+                                "cp_a_campaign_id": attribution.campaignID ?? 0,
+                                "cp_a_click_date": attribution.clickDate ?? "",
+                                "cp_a_ad_group_id": attribution.adGroupID ?? 0,
+                                "cp_a_country_region": attribution.countryOrRegion ?? "",
+                                "cp_a_keyword_id": attribution.keywordID ?? -1,
+                                "cp_a_ad_id": attribution.adID ?? 0
+                            ])
+                        } catch {
+                            print("error: \(error.localizedDescription)")
+                            DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: [
+                                "cp_error": "data not decodable",
+                                "cp_decode_error": true,
+                                "cp_decode_catch_error": error.localizedDescription
+                            ], removingDefault: false)
+                        }
+                    } else {
+                        DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: [
+                            "cp_error": "no data downloaded",
+                            "cp_decode_error": false
+                        ], removingDefault: false)
                     }
                 }.resume()
                 
             } catch {
-                DZAnalytics.sendEvent(withName: "ce_seatch_ad_error", parameters: ["error": error.localizedDescription])
+                DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: ["cp_error": error.localizedDescription])
                 print("There was an errore getting the attribution token: \(error.localizedDescription)")
             }
+        } else {
+            DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: ["cp_error": "old ios version: \(UIDevice.current.systemVersion)"])
         }
     }
     
@@ -54,6 +75,7 @@ extension DZDataAnalytics {
         func getAttribution() {
             ADClient.shared().requestAttributionDetails({ (attributionDetails, error) in
                 if let error = error {
+                    DZAnalytics.sendEvent(withName: "ce_search_ad_attr_error", parameters: ["cp_error": error.localizedDescription])
                     print("There was an error while requesting attribution details: \(error.localizedDescription)")
                 }
                 
@@ -67,11 +89,12 @@ extension DZDataAnalytics {
                                 parametersKeys.cp_keychainID.rawValue: AnalyticsVars.keychainID,
                             ])
                             
-                            
                             self.sendEvent(withName: eventNameKeys.ce_search_event_tracking.rawValue, parameters: adDictionary)
                             self.setDefaultParams()
                         }
                     }
+                } else {
+                    DZAnalytics.sendEvent(withName: "ce_search_ad_attr_error", parameters: ["cp_error": "attribution details not valid"])
                 }
             })
         }
@@ -106,6 +129,7 @@ extension DZDataAnalytics {
                 }
             }
         } else {
+            DZAnalytics.sendEvent(withName: "ce_search_ad_attr_error", parameters: ["cp_error": "old ios version: \(UIDevice.current.systemVersion)"])
             getAttribution()
         }
     }
