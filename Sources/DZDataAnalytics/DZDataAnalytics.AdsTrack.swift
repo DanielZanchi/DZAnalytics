@@ -75,7 +75,7 @@ extension DZDataAnalytics {
     private func sendToServer(parameters: [String: Any]) {
         let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
         // create post request
-        let url = URL(string: "http://localhost:8080/receiveSearchAdsAttr")! //PUT Your URL
+        let url = URL(string: "http://192.168.1.5:8080/receiveSearchAdsAttr")! //PUT Your URL
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("\(String(describing: jsonData?.count))", forHTTPHeaderField: "Content-Length")
