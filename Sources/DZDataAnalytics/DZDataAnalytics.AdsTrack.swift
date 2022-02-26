@@ -36,7 +36,7 @@ extension DZDataAnalytics {
                     if let data = data {
                         do {
                             let attribution = try JSONDecoder().decode(AAAttributionModel.self, from: data)
-                            DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: [
+                            let parameters: [String: Any] = [
                                 "cp_a_attribution": attribution.attribution ?? false,
                                 "cp_a_campaign_id": attribution.campaignID ?? 0,
                                 "cp_a_click_date": attribution.clickDate ?? "",
@@ -44,7 +44,9 @@ extension DZDataAnalytics {
                                 "cp_a_country_region": attribution.countryOrRegion ?? "",
                                 "cp_a_keyword_id": attribution.keywordID ?? -1,
                                 "cp_a_ad_id": attribution.adID ?? 0
-                            ])
+                            ]
+                            sendToServer(parameters: parameters)
+                            DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: parameters)
                         } catch {
                             print("error: \(error.localizedDescription)")
                             DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: [
@@ -68,6 +70,36 @@ extension DZDataAnalytics {
         } else {
             DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: ["cp_error": "old ios version: \(UIDevice.current.systemVersion)"])
         }
+    }
+    
+    private func sendToServer(parameters: [String: Any]) {
+        let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
+        // create post request
+        let url = URL(string: "http://localhost:8080/receiveSearchAdsAttr")! //PUT Your URL
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("\(String(describing: jsonData?.count))", forHTTPHeaderField: "Content-Length")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        // insert json data to the request
+        request.httpBody = jsonData
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print ("httpResponse.statusCode: \(httpResponse.statusCode)")
+            }
+            
+            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+            if let responseJSON = responseJSON as? [String: Any] {
+                print(responseJSON) //Code after Successfull POST Request
+            }
+        }
+
+        task.resume()
     }
     
     /// if calling this you should add this to info.plist: "NSUserTrackingUsageDescription" : "Use you device information for performance statistics to improve product stability"
