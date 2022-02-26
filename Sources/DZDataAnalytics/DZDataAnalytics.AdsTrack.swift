@@ -77,7 +77,7 @@ extension DZDataAnalytics {
         parameters["cp_keychainID"] = getKeychainID()
         parameters["cp_after_tracking_popup"] = afterTracking
         let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
-        guard let baseURL = serverURL, let url = URL(string: "\(baseURL):8080/receiveSearchAdsAttr") else { return }
+        guard let baseURL = serverURL, let url = URL(string: "\(baseURL)/receiveSearchAdsAttr") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("\(String(describing: jsonData?.count))", forHTTPHeaderField: "Content-Length")
