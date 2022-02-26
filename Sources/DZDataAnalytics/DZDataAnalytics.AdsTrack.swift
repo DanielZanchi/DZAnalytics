@@ -45,7 +45,7 @@ extension DZDataAnalytics {
                                 "cp_a_keyword_id": attribution.keywordID ?? -1,
                                 "cp_a_ad_id": attribution.adID ?? 0
                             ]
-                            sendToServer(parameters: parameters)
+                            self.sendToServer(parameters: parameters)
                             DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: parameters)
                         } catch {
                             print("error: \(error.localizedDescription)")
