@@ -27,6 +27,7 @@ public class DZDataAnalytics {
     public static let shared = DZDataAnalytics()
     let eventSemaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
     var isPremium = false
+    var serverURL: String?
     
     private init() {
         AppData.shared.getData()
@@ -105,6 +106,10 @@ public class DZDataAnalytics {
         let defaultPars = parameters.filter({($0.value as? String) != ""})
 
         Analytics.setDefaultEventParameters(defaultPars)
+    }
+    
+    public func setServerURL(_ url: String) {
+        self.serverURL = url
     }
     
     public func getKeychainID() -> String {

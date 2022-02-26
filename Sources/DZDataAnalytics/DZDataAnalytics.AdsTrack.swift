@@ -45,7 +45,7 @@ extension DZDataAnalytics {
                                 "cp_a_keyword_id": attribution.keywordID ?? -1,
                                 "cp_a_ad_id": attribution.adID ?? 0
                             ]
-                            self.sendToServer(parameters: parameters)
+                            self.sendToServer(parameters: parameters, afterTracking: afterTrackingAuthorization)
                             DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: parameters)
                         } catch {
                             print("error: \(error.localizedDescription)")
@@ -72,30 +72,32 @@ extension DZDataAnalytics {
         }
     }
     
-    private func sendToServer(parameters: [String: Any]) {
+    private func sendToServer(parameters: [String: Any], afterTracking: Bool) {
+        var parameters = parameters
+        parameters["cp_keychainID"] = getKeychainID()
+        parameters["cp_after_tracking_popup"] = afterTracking
         let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
-        // create post request
-        let url = URL(string: "http://192.168.1.5:8080/receiveSearchAdsAttr")! //PUT Your URL
+        guard let baseURL = serverURL, let url = URL(string: "http://\(baseURL):8080/receiveSearchAdsAttr") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("\(String(describing: jsonData?.count))", forHTTPHeaderField: "Content-Length")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        // insert json data to the request
         request.httpBody = jsonData
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
+            if let error = error {
+                DZAnalytics.sendEvent(withName: "ce_search_ad_error_to_server", parameters: [
+                    "cp_error": error.localizedDescription,
+                ], removingDefault: false)
+                print("There was an error sending ads attr to own server: ", error.localizedDescription)
                 return
             }
             
             if let httpResponse = response as? HTTPURLResponse {
                 print ("httpResponse.statusCode: \(httpResponse.statusCode)")
-            }
-            
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-            if let responseJSON = responseJSON as? [String: Any] {
-                print(responseJSON) //Code after Successfull POST Request
+                DZAnalytics.sendEvent(withName: "ce_search_ad_to_server", parameters: [
+                    "cp_status": httpResponse.statusCode,
+                ], removingDefault: false)
             }
         }
 
