@@ -11,21 +11,25 @@ import Foundation
 // MARK: - AAAttributionModel
 struct AAAttributionModel: Codable {
     let attribution: Bool?
-    let orgID, campaignID: Int?
-    let conversionType, clickDate: String?
+//    let orgID: Int?
+    let campaignID: Int?
+//    let conversionType: String?
+//        let clickDate: String?
     let adGroupID: Int?
     let countryOrRegion: String?
-    let keywordID, adID: Int?
+    let keywordID: Int?
+//    let adID: Int?
 
     enum CodingKeys: String, CodingKey {
         case attribution
-        case orgID = "orgId"
+//        case orgID = "orgId"
         case campaignID = "campaignId"
-        case conversionType, clickDate
+//        case conversionType
+//        case clickDate
         case adGroupID = "adGroupId"
         case countryOrRegion
         case keywordID = "keywordId"
-        case adID = "adId"
+//        case adID = "adId"
     }
 }
 

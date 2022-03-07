@@ -38,12 +38,12 @@ extension DZDataAnalytics {
                             let attribution = try JSONDecoder().decode(AAAttributionModel.self, from: data)
                             let parameters: [String: Any] = [
                                 "cp_a_attribution": attribution.attribution ?? false,
-                                "cp_a_campaign_id": attribution.campaignID ?? 0,
-                                "cp_a_click_date": attribution.clickDate ?? "",
-                                "cp_a_ad_group_id": attribution.adGroupID ?? 0,
-                                "cp_a_country_region": attribution.countryOrRegion ?? "",
+                                "cp_a_campaign_id": attribution.campaignID ?? -1,
+//                                "cp_a_click_date": attribution.clickDate ?? "",
+                                "cp_a_ad_group_id": attribution.adGroupID ?? -1,
+                                "cp_a_country_region": attribution.countryOrRegion ?? "UNDEFINED",
                                 "cp_a_keyword_id": attribution.keywordID ?? -1,
-                                "cp_a_ad_id": attribution.adID ?? 0
+//                                "cp_a_ad_id": attribution.adID ?? -1
                             ]
                             self.sendToServer(parameters: parameters, afterTracking: afterTrackingAuthorization)
                             DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: parameters)
@@ -54,6 +54,12 @@ extension DZDataAnalytics {
                                 "cp_decode_error": true,
                                 "cp_decode_catch_error": error.localizedDescription
                             ], removingDefault: false)
+                            
+                            if let payloadString = String(data: data, encoding: .utf8) {
+                                DZAnalytics.sendEvent(withName: "ce_search_ad_error_payload", parameters: [
+                                    "cp_payload": payloadString
+                                ], removingDefault: false)
+                            }
                         }
                     } else {
                         DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: [
