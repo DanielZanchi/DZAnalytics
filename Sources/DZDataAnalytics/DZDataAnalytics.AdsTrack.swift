@@ -81,7 +81,7 @@ extension DZDataAnalytics {
                                 "cp_a_keyword_id": attribution.keywordID ?? -1,
 //                                "cp_a_ad_id": attribution.adID ?? -1
                             ]
-                            self.sendToStorage(data: data)
+                            self.sendToStorage(data: data, isError: false)
                             self.sendToServer(parameters: parameters, afterTracking: afterTrackingAuthorization)
                             DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: parameters)
                         } catch {
