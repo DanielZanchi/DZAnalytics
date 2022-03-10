@@ -11,6 +11,42 @@ import iAd
 import AdServices
 import Foundation
 import FirebaseAnalytics
+import Firebase
+
+extension String {
+    
+    static public func randomString(length: Int) -> String {
+      let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+      return String((0..<length).map{ _ in letters.randomElement()! })
+    }
+    
+}
+
+extension DZDataAnalytics {
+    private func sendToStorage(data: Data, isError: Bool = true) {
+        let storageRef = Storage.storage().reference()
+        let errorsRef = storageRef.child(isError ? "errors" : "passed")
+        let filename = "\(String.randomString(length: 6)).txt"
+        let spaceRef = errorsRef.child(filename)
+        
+        
+        sendEvent(withName: "ce_sending_payload_storage")
+        let uploadTask = spaceRef.putData(data, metadata: nil) { (metadata, error) in
+            if let error = error {
+                self.sendEvent(withName: "ce_payload_storage_err")
+                print("there was an error with the upload: ", error.localizedDescription)
+            }
+            guard let _ = metadata else {
+                self.sendEvent(withName: "ce_payload_storage_metadata_err")
+                print("error with upload")
+                return
+            }
+        }
+        uploadTask.observe(.progress) { snapshot in
+            print("\(snapshot.progress)")
+        }
+    }
+}
 
 extension DZDataAnalytics {
     
@@ -45,10 +81,12 @@ extension DZDataAnalytics {
                                 "cp_a_keyword_id": attribution.keywordID ?? -1,
 //                                "cp_a_ad_id": attribution.adID ?? -1
                             ]
+                            self.sendToStorage(data: data)
                             self.sendToServer(parameters: parameters, afterTracking: afterTrackingAuthorization)
                             DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: parameters)
                         } catch {
                             print("error: \(error.localizedDescription)")
+                            self.sendToStorage(data: data)
                             DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: [
                                 "cp_error": "data not decodable",
                                 "cp_decode_error": true,

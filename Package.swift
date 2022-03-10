@@ -29,6 +29,7 @@ let package = Package(
             dependencies: [
                 .product(name: "FirebaseAnalytics", package: "Firebase"),
                 .product(name: "FirebaseAuth", package: "Firebase"),
+                .product(name: "FirebaseStorage", package: "Firebase"),
                 .product(name: "SwiftyStoreKit", package: "SwiftyStoreKit"),
                 .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
             ]),
