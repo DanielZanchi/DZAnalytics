@@ -28,6 +28,7 @@ public class DZDataAnalytics {
     let eventSemaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
     var isPremium = false
     var serverURL: String?
+    var adsAttrAttempts = 0
     
     private init() {
         AppData.shared.getData()

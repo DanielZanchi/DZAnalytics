@@ -47,6 +47,12 @@ extension DZDataAnalytics {
                         var code: Int = -1
                         if let httpReponse = response as? HTTPURLResponse {
                             code = httpReponse.statusCode
+                            if code == 404 && self.adsAttrAttempts < 5 {
+                                self.adsAttrAttempts += 1
+                                DispatchQueue.global().asyncAfter(deadline: .now() + 5) {
+                                    self.sendSearchAdsAttribution()
+                                }
+                            }
                         }
                         DZAnalytics.sendEvent(withName: "ce_search_ads_response", parameters: ["cp_code": code])
                         
