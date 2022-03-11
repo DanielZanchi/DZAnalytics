@@ -23,32 +23,6 @@ extension String {
 }
 
 extension DZDataAnalytics {
-    private func sendToStorage(data: Data, isError: Bool = true) {
-        let storageRef = Storage.storage().reference()
-        let errorsRef = storageRef.child(isError ? "errors" : "passed")
-        let filename = "\(String.randomString(length: 6)).txt"
-        let spaceRef = errorsRef.child(filename)
-        
-        
-        sendEvent(withName: "ce_sending_payload_storage")
-        let uploadTask = spaceRef.putData(data, metadata: nil) { (metadata, error) in
-            if let error = error {
-                self.sendEvent(withName: "ce_payload_storage_err")
-                print("there was an error with the upload: ", error.localizedDescription)
-            }
-            guard let _ = metadata else {
-                self.sendEvent(withName: "ce_payload_storage_metadata_err")
-                print("error with upload")
-                return
-            }
-        }
-        uploadTask.observe(.progress) { snapshot in
-            print("\(snapshot.progress)")
-        }
-    }
-}
-
-extension DZDataAnalytics {
     
     //This doesn't need the tracking auth from the user. If the user didn't give consent it will send a standard payload.s
     func sendSearchAdsAttribution(afterTrackingAuthorization: Bool = false) {
@@ -70,6 +44,12 @@ extension DZDataAnalytics {
                         return
                     }
                     if let data = data {
+                        var code: Int = -1
+                        if let httpReponse = response as? HTTPURLResponse {
+                            code = httpReponse.statusCode
+                        }
+                        DZAnalytics.sendEvent(withName: "ce_search_ads_response", parameters: ["cp_code": code])
+                        
                         do {
                             let attribution = try JSONDecoder().decode(AAAttributionModel.self, from: data)
                             let parameters: [String: Any] = [
@@ -81,12 +61,10 @@ extension DZDataAnalytics {
                                 "cp_a_keyword_id": attribution.keywordID ?? -1,
 //                                "cp_a_ad_id": attribution.adID ?? -1
                             ]
-                            self.sendToStorage(data: data, isError: false)
                             self.sendToServer(parameters: parameters, afterTracking: afterTrackingAuthorization)
                             DZAnalytics.sendEvent(withName: afterTrackingAuthorization ? "ce_search_ad_attr_ap" : "ce_search_ad_attr_bp", parameters: parameters)
                         } catch {
                             print("error: \(error.localizedDescription)")
-                            self.sendToStorage(data: data)
                             DZAnalytics.sendEvent(withName: "ce_search_ad_error", parameters: [
                                 "cp_error": "data not decodable",
                                 "cp_decode_error": true,
