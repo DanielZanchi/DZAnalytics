@@ -10,6 +10,10 @@ import StoreKit.SKProduct
 
 extension DZDataAnalytics {
     
+    public enum FlowType: String {
+        case ce_purchase_initialized, ce_paywall_appear, ce_paywall_dismissed, ce_did_purchase
+    }
+    
     public func setPremium(_ value: Bool) {
         self.isPremium = value
         AppData.shared.saveData()
@@ -38,10 +42,10 @@ extension DZDataAnalytics {
         ]
         
         if let addParameters = addParameters {
-            addParameters.forEach({parameters[$0] = $1})
+            addParameters.forEach({parameters[$0.key] = $0.value})
         }
         
-        sendEvent(withName: "ce_did_purchase", parameters: parameters)
+        purchaseFlowEvent(.ce_did_purchase, addedParameters: parameters)
     }
     
     public func didExpire(productId: String, expireDate: Date) {
@@ -50,6 +54,20 @@ extension DZDataAnalytics {
                         parametersKeys.cp_product_id.rawValue: productId,
                         parametersKeys.cp_subscription_expire_date.rawValue: expireDate.getStringDate()
                     ])
+    }
+    
+    public func purchaseFlowEvent(_ eventName: FlowType, addedParameters: [String: Any]? = nil) {
+        var parameters: [String: Any] = [
+            "cp_paywall_name": DataProvider.current.get()?.paywallName ?? "",
+            "cp_trigger": DataProvider.current.get()?.trigger ?? "",
+            "cp_is_testing": DataProvider.current.get()?.isTesting ?? false,
+        ]
+        
+        if let addedParameters = addedParameters {
+            addedParameters.forEach({parameters[$0.key] = $0.value})
+        }
+        
+        sendEvent(withName: eventName.rawValue, parameters: parameters)
     }
     
 }

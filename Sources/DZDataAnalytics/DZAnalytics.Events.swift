@@ -55,23 +55,6 @@ extension DZDataAnalytics {
         sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
     }
     
-    
-    public func purchaseInitialized(productId: String) {
-        DZAnalytics.sendEvent(withName: "ce_purchase_initialized", parameters: [
-            "cp_paywall_name": DataProvider.current.get()?.paywallName ?? "",
-            "cp_trigger": DataProvider.current.get()?.trigger ?? "",
-            "cp_product_id": productId
-        ])
-    }
-    
-    public func didSeePaywall() {
-        sendEvent(withName: "ce_paywall_appear", parameters: [
-            "cp_paywall_name": DataProvider.current.get()?.paywallName ?? "",
-            "cp_trigger": DataProvider.current.get()?.trigger ?? "",
-            "cp_is_testing": DataProvider.current.get()?.isTesting ?? false,
-        ])
-    }
-    
     public func sendReceiptInfos(_ receipt: [String: AnyObject], localReceipt: Bool = false) {
         guard AnalyticsVars.didSendReceipt == false else { return }
         if let receiptInfo = receipt["receipt"] {
