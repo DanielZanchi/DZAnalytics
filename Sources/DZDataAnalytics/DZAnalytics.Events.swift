@@ -58,17 +58,17 @@ extension DZDataAnalytics {
     
     public func purchaseInitialized(productId: String) {
         DZAnalytics.sendEvent(withName: "ce_purchase_initialized", parameters: [
-            "cp_paywall_name": AnalyticsDataProvider.current.get()?.paywallName ?? "",
-            "cp_trigger": AnalyticsDataProvider.current.get()?.trigger ?? "",
+            "cp_paywall_name": DataProvider.current.get()?.paywallName ?? "",
+            "cp_trigger": DataProvider.current.get()?.trigger ?? "",
             "cp_product_id": productId
         ])
     }
     
-    public func didSeePaywall(withName name: String, isTesting: Bool, trigger: String) {
+    public func didSeePaywall() {
         sendEvent(withName: "ce_paywall_appear", parameters: [
-            "cp_paywall_name": name,
-            "cp_is_testing": isTesting,
-            "cp_trigger": trigger
+            "cp_paywall_name": DataProvider.current.get()?.paywallName ?? "",
+            "cp_trigger": DataProvider.current.get()?.trigger ?? "",
+            "cp_is_testing": DataProvider.current.get()?.isTesting ?? false,
         ])
     }
     

@@ -7,33 +7,38 @@
 
 import Foundation
 
-public class AnalyticsDataProvider {
-    
-    public static let current = AnalyticsDataProvider()
-    
-    private var paywallName: String?
-    private var trigger: String?
-    
-    private init() {
+public extension DZDataAnalytics {
+    class DataProvider {
         
-    }
-    
-    public func set(paywallName: String, trigger: String) {
-        self.paywallName = paywallName
-        self.trigger = trigger
-    }
-    
-    public func get() -> (paywallName: String, trigger: String)? {
-        guard let paywallName = paywallName, let trigger = trigger else {
-            return nil
+        public static let current = DataProvider()
+        
+        private var paywallName: String?
+        private var isTesting: Bool?
+        private var trigger: String?
+        
+        private init() {
+            
         }
         
-        return (paywallName: paywallName, trigger: trigger)
+        public func set(paywallName: String, trigger: String, isTesting: Bool = false) {
+            self.paywallName = paywallName
+            self.trigger = trigger
+            self.isTesting = isTesting
+        }
+        
+        public func get() -> (paywallName: String, trigger: String, isTesting: Bool)? {
+            guard let paywallName = paywallName, let trigger = trigger, let isTesting = self.isTesting else {
+                return nil
+            }
+            
+            return (paywallName: paywallName, trigger: trigger, isTesting: isTesting)
+        }
+        
+        public func reset() {
+            self.trigger = nil
+            self.paywallName = nil
+            self.isTesting = nil
+        }
+        
     }
-    
-    public func reset() {
-        self.trigger = nil
-        self.paywallName = nil
-    }
-    
 }
