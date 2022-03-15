@@ -7,8 +7,8 @@
 
 import Foundation
 
-public extension DZDataAnalytics {
-    class DataProvider {
+extension DZDataAnalytics {
+    public class DataProvider {
         
         public static let current = DataProvider()
         
