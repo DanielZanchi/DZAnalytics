@@ -14,22 +14,22 @@ struct AAAttributionModel: Codable {
 //    let orgID: Int?
     let campaignID: Int?
 //    let conversionType: String?
-//        let clickDate: String?
+        let clickDate: String?
     let adGroupID: Int?
     let countryOrRegion: String?
     let keywordID: Int?
-//    let adID: Int?
+    let adID: Int?
 
     enum CodingKeys: String, CodingKey {
         case attribution
 //        case orgID = "orgId"
         case campaignID = "campaignId"
 //        case conversionType
-//        case clickDate
+        case clickDate
         case adGroupID = "adGroupId"
         case countryOrRegion
         case keywordID = "keywordId"
-//        case adID = "adId"
+        case adID = "adId"
     }
 }
 
