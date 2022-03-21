@@ -156,11 +156,9 @@ extension DZDataAnalytics {
             })
         }
         
-        guard didRequestAdAttribution() == false else { return }
-        
-        AppData.shared.defaults.set(true, forKey: AppData.Keys.didRequestAdAttribution.rawValue)
         
         if #available(iOS 14, *) {
+            guard didRequestAdAttribution() == false else { return }
             ATTrackingManager.requestTrackingAuthorization { status in
                 switch status {
                 case .authorized:
@@ -193,8 +191,9 @@ extension DZDataAnalytics {
     
     
     
+    @available(iOS 14, *)
     private func didRequestAdAttribution() -> Bool {
-        return AppData.shared.defaults.bool(forKey: AppData.Keys.didRequestAdAttribution.rawValue)
+        return !(ATTrackingManager.trackingAuthorizationStatus == .notDetermined)
     }
 }
 
