@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "DZDataAnalytics",
     platforms: [
-        .iOS(.v14)
+        .iOS(.v13)
     ],
     products: [
         .library(
@@ -14,7 +14,7 @@ let package = Package(
             targets: ["DZDataAnalytics"]),
     ],
     dependencies: [
-        .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", from: "8.13.0"),
+        .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", from: "8.14.0"),
         .package(name: "SwiftyStoreKit", url: "https://github.com/bizz84/SwiftyStoreKit.git", from: "0.16.4"),
         .package(name: "SwiftKeychainWrapper", url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1")
     ],
