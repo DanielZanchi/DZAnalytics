@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "DZDataAnalytics",
     platforms: [
-        .iOS(.v14)
+        .iOS(.v10)
     ],
     products: [
         .library(
