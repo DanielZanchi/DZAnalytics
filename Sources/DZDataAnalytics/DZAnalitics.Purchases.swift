@@ -11,7 +11,7 @@ import StoreKit.SKProduct
 extension DZDataAnalytics {
     
     public enum FlowType: String {
-        case ce_purchase_initialized, ce_paywall_appear, ce_paywall_dismissed, ce_did_purchase
+        case ce_purchase_initialized, ce_paywall_appear, ce_paywall_dismissed, ce_did_purchase, ce_purchase_error
     }
     
     public func setPremium(_ value: Bool) {
