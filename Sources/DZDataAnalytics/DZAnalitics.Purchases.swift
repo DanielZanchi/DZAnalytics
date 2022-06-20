@@ -58,10 +58,14 @@ extension DZDataAnalytics {
     
     public func purchaseFlowEvent(_ eventName: FlowType, addedParameters: [String: Any]? = nil) {
         var parameters: [String: Any] = [
-            "cp_paywall_name": DataProvider.current.get()?.paywallName ?? "",
-            "cp_trigger": DataProvider.current.get()?.trigger ?? "",
-            "cp_is_testing": DataProvider.current.get()?.isTesting ?? false,
+            "cp_paywall_name": DataProvider.current.get().paywallName ?? "",
+            "cp_trigger": DataProvider.current.get().trigger ?? "",
+            "cp_flow_type": DataProvider.current.get().flowType ?? ""
         ]
+        
+        if let isTesting = DataProvider.current.get().isTesting {
+            parameters["cp_is_testing"] = isTesting
+        }
         
         if let addedParameters = addedParameters {
             addedParameters.forEach({parameters[$0.key] = $0.value})
