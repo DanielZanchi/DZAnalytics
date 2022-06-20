@@ -57,7 +57,7 @@ extension DZDataAnalytics {
     
     public func setTestSegmentation(flowType: String, priceType: String) {
         let parameters: [String: Any] = [
-            "cp_flow_type" : flowType
+            "cp_flow_type" : flowType,
             "cp_price_type" : priceType
         ]
         
