@@ -35,7 +35,7 @@ extension DZDataAnalytics {
         }
     }
     
-    @available(*, deprecated, message: "Use setTestSegmentation instead")
+    @available(*, deprecated, message: "Use setTestSegmnentation instead")
     public func setTestPaywall(withName name: String) {
         sendEvent(withName: "ce_begin_paywall_test", parameters: [
             "cp_paywall_name": name
@@ -51,6 +51,15 @@ extension DZDataAnalytics {
             parameters["cp_experiment_onboarding_survey"] = surveyEnabled
             
         }
+        
+        sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
+    }
+    
+    public func setTestSegmentation(flowType: String, priceType: String) {
+        let parameters: [String: Any] = [
+            "cp_flow_type" : flowType
+            "cp_price_type" : priceType
+        ]
         
         sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
     }
