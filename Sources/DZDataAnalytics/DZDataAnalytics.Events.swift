@@ -64,6 +64,16 @@ extension DZDataAnalytics {
         sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
     }
     
+    public func setTestSegmentation(flowType: String, priceType: String, paywallType: String) {
+        let parameters: [String: Any] = [
+            "cp_flow_type" : flowType,
+            "cp_price_type" : priceType,
+            "cp_paywall_type": paywallType
+        ]
+        
+        sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
+    }
+    
     public func sendReceiptInfos(_ receipt: [String: AnyObject], localReceipt: Bool = false) {
         guard AnalyticsVars.didSendReceipt == false else { return }
         if let receiptInfo = receipt["receipt"] {
