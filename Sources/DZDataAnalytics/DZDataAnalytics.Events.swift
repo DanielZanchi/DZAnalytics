@@ -74,6 +74,10 @@ extension DZDataAnalytics {
         sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
     }
     
+    public func setTestSegmentation(_ parameters: [String: String]) {
+        sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
+    }
+    
     public func sendReceiptInfos(_ receipt: [String: AnyObject], localReceipt: Bool = false) {
         guard AnalyticsVars.didSendReceipt == false else { return }
         if let receiptInfo = receipt["receipt"] {
