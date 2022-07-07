@@ -60,7 +60,8 @@ extension DZDataAnalytics {
         var parameters: [String: Any] = [
             "cp_paywall_name": DataProvider.current.get().paywallName ?? "",
             "cp_trigger": DataProvider.current.get().trigger ?? "",
-            "cp_flow_type": DataProvider.current.get().flowType ?? ""
+            "cp_flow_type": DataProvider.current.get().flowType ?? "",
+            "cp_limit_type": DataProvider.current.get().limitType ?? ""
         ]
         
         if let isTesting = DataProvider.current.get().isTesting {
