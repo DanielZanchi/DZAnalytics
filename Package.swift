@@ -22,9 +22,9 @@ let package = Package(
         .target(
             name: "DZDataAnalytics",
             dependencies: [
-//                .product(name: "FirebaseAnalytics", package: "Firebase"),
-//                .product(name: "FirebaseAuth", package: "Firebase"),
-//                .product(name: "FirebaseStorage", package: "Firebase"),
+                .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseStorage", package: "firebase-ios-sdk"),
                 .product(name: "SwiftyStoreKit", package: "SwiftyStoreKit"),
                 .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
             ]),
