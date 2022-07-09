@@ -11,7 +11,7 @@ extension Date {
     /**
      Returns a string with the format "dd/MM/yyyy", or edit the format
      */
-    func getStringDate(format: String = "yyyy-MM-dd HH:mm:ss Z", localeId: String = "it_IT") -> String {
+    func getStringDate(format: String = "yyyy-MM-dd HH:mm:ss Z", localeId: String = "en_US") -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         dateFormatter.locale = Locale(identifier: localeId)

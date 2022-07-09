@@ -35,13 +35,6 @@ extension DZDataAnalytics {
         }
     }
     
-    @available(*, deprecated, message: "Use setTestSegmnentation instead")
-    public func setTestPaywall(withName name: String) {
-        sendEvent(withName: "ce_begin_paywall_test", parameters: [
-            "cp_paywall_name": name
-        ])
-    }
-    
     public func setTestSegmnentation(paywallName: String?, surveyEnabled: Bool?) {
         var parameters: [String: Any] = [:]
         if let paywallName = paywallName {
@@ -52,29 +45,31 @@ extension DZDataAnalytics {
             
         }
         
-        sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
+        self.setTestSegmentation(parameters)
     }
     
     public func setTestSegmentation(flowType: String, priceType: String) {
-        let parameters: [String: Any] = [
+        let parameters: [String: String] = [
             "cp_flow_type" : flowType,
             "cp_price_type" : priceType
         ]
         
-        sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
+        self.setTestSegmentation(parameters)
     }
     
     public func setTestSegmentation(flowType: String, priceType: String, paywallType: String) {
-        let parameters: [String: Any] = [
+        let parameters: [String: String] = [
             "cp_flow_type" : flowType,
             "cp_price_type" : priceType,
             "cp_paywall_type": paywallType
         ]
         
-        sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
+        self.setTestSegmentation(parameters)
     }
     
-    public func setTestSegmentation(_ parameters: [String: String]) {
+    public func setTestSegmentation(_ parameters: [String: Any]) {
+        var parameters = parameters
+        parameters["cp_assignment_date"] = Date().getStringDate()
         sendEvent(withName: "ce_experiment_segmentation", parameters: parameters)
     }
     
