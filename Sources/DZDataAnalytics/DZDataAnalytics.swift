@@ -109,6 +109,14 @@ public class DZDataAnalytics {
         Analytics.setDefaultEventParameters(defaultPars)
     }
     
+    public func setFromOldFramework(id: String, sessionCount: Int) {
+        AnalyticsVars.keychainID = id
+        AnalyticsVars.userDefaultsID = id
+        Analytics.setUserID(id)
+        AnalyticsVars.sessionCount = sessionCount
+        AppData.shared.saveData()
+    }
+    
     public func setServerURL(_ url: String) {
         self.serverURL = url
     }
