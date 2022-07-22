@@ -115,6 +115,7 @@ public class DZDataAnalytics {
         Analytics.setUserID(id)
         AnalyticsVars.sessionCount = sessionCount
         AppData.shared.saveData()
+        setDefaultParams()
     }
     
     public func setServerURL(_ url: String) {
