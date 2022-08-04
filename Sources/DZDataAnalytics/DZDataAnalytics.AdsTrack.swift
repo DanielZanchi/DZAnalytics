@@ -128,7 +128,7 @@ extension DZDataAnalytics {
     }
     
     /// if calling this you should add this to info.plist: "NSUserTrackingUsageDescription" : "Use you device information for performance statistics to improve product stability"
-    public func requestiAdAttribution() {
+    public func requestiAdAttribution(completion: (() -> Void)? = nil) {
         func getAttribution() {
             ADClient.shared().requestAttributionDetails({ (attributionDetails, error) in
                 if let error = error {
@@ -182,10 +182,12 @@ extension DZDataAnalytics {
                 @unknown default:
                     print("Unknown")
                 }
+                completion?()
             }
         } else {
             DZAnalytics.sendEvent(withName: "ce_search_ad_attr_error", parameters: ["cp_error": "old ios version: \(UIDevice.current.systemVersion)"])
             getAttribution()
+            completion?()
         }
     }
     
