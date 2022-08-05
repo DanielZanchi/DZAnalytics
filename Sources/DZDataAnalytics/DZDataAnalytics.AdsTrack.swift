@@ -158,7 +158,7 @@ extension DZDataAnalytics {
         
         
         if #available(iOS 14, *) {
-            guard didRequestAdAttribution() == false else { return }
+            guard didRequestAdAttribution() == false else { completion?(); return }
             ATTrackingManager.requestTrackingAuthorization { status in
                 switch status {
                 case .authorized:
