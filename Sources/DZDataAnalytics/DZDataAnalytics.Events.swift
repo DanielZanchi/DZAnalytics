@@ -12,26 +12,17 @@ import FirebaseAnalytics
 extension DZDataAnalytics {
     
     public func sendEvent(withName name: String, parameters: [String: Any]? = nil, removingDefault: Bool = false) {
-        DispatchQueue(label: "DZAnalytics.eventLogger").async {
-            self.eventSemaphore.wait()
-            print("******** event logged")
-            if removingDefault {
-                Analytics.setDefaultEventParameters(nil)
-                Analytics.setDefaultEventParameters([
-                    parametersKeys.cp_keychainID.rawValue: AnalyticsVars.keychainID,
-                ])
-            }
-            
-            Analytics.logEvent(name, parameters: parameters)
-            
-            if removingDefault {
-                self.setDefaultParams()
-            }
-            
-            DispatchQueue(label: "DZAnalytics.eventLogger").asyncAfter(deadline: .now() + 2) {
-                self.eventSemaphore.signal()
-            }
-            
+        if removingDefault {
+            Analytics.setDefaultEventParameters(nil)
+            Analytics.setDefaultEventParameters([
+                parametersKeys.cp_keychainID.rawValue: AnalyticsVars.keychainID,
+            ])
+        }
+        
+        Analytics.logEvent(name, parameters: parameters)
+        
+        if removingDefault {
+            self.setDefaultParams()
         }
     }
     

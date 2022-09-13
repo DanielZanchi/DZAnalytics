@@ -25,7 +25,6 @@ public class DZDataAnalytics {
     }
     
     public static let shared = DZDataAnalytics()
-    let eventSemaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
     var isPremium = false
     var serverURL: String?
     var adsAttrAttempts = 0
