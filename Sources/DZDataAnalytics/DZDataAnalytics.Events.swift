@@ -11,6 +11,13 @@ import FirebaseAnalytics
 
 extension DZDataAnalytics {
     
+    public enum StandardEventsNames: String {
+        //App Delegate
+        case ce_app_did_enter_background, ce_app_will_enter_foreground, ce_app_will_terminate
+        //Splash
+        case ce_splashscreen_did_appear, ce_splash_move_to_home, ce_splash_continue_tap
+    }
+    
     public func sendEvent(withName name: String, parameters: [String: Any]? = nil, removingDefault: Bool = false) {
         if removingDefault {
             Analytics.setDefaultEventParameters(nil)
@@ -24,6 +31,10 @@ extension DZDataAnalytics {
         if removingDefault {
             self.setDefaultParams()
         }
+    }
+    
+    public func sendEvent(_ eventName: StandardEventsNames) {
+        self.sendEvent(withName: eventName.rawValue)
     }
     
     public func setTestSegmnentation(paywallName: String?, surveyEnabled: Bool?) {
