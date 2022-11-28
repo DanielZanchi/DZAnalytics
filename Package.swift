@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "DZDataAnalytics",
     platforms: [
-        .iOS(.v11)
+        .iOS(.v12)
     ],
     products: [
         .library(
@@ -16,7 +16,9 @@ let package = Package(
     dependencies: [
         .package(name: "SwiftyStoreKit", url: "https://github.com/bizz84/SwiftyStoreKit.git", from: "0.16.4"),
         .package(name: "SwiftKeychainWrapper", url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1"),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.1.0")
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.1.0"),
+        .package(url: "https://github.com/adjust/ios_sdk", branch: "master"),
+        .package(url: "https://github.com/facebook/facebook-ios-sdk", from: "15.1.0")
     ],
     targets: [
         .target(
@@ -26,7 +28,9 @@ let package = Package(
                 .product(name: "FirebaseAuth", package: "firebase-ios-sdk"),
                 .product(name: "FirebaseStorage", package: "firebase-ios-sdk"),
                 .product(name: "SwiftyStoreKit", package: "SwiftyStoreKit"),
-                .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper")
+                .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper"),
+                .product(name: "Adjust", package: "ios_sdk"),
+                .product(name: "FacebookCore", package: "facebook-ios-sdk")
             ]),
     ]
 )

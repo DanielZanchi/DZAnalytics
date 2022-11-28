@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "Facebook",
+        "repositoryURL": "https://github.com/facebook/facebook-ios-sdk",
+        "state": {
+          "branch": null,
+          "revision": "7fd8a930a5b2c940a22efafe0e214ed0df671312",
+          "version": "15.1.0"
+        }
+      },
+      {
         "package": "Firebase",
         "repositoryURL": "https://github.com/firebase/firebase-ios-sdk.git",
         "state": {
@@ -71,6 +80,15 @@
           "branch": null,
           "revision": "d4289da23e978f37c344ea6a386e5546e2466294",
           "version": "2.1.0"
+        }
+      },
+      {
+        "package": "Adjust",
+        "repositoryURL": "https://github.com/adjust/ios_sdk",
+        "state": {
+          "branch": "master",
+          "revision": "7fee79ab2979c27b5c768d40e726107c7460f60c",
+          "version": null
         }
       },
       {

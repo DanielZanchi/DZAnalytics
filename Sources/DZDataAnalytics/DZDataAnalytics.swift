@@ -34,7 +34,7 @@ public class DZDataAnalytics {
     }
     
     @discardableResult
-    public func logFirstOpen() -> InstallState {
+    public func logFirstOpen(adjustToken: String? = nil) -> InstallState {
         AnalyticsVars.sessionCount += 1
         
         let installState = installState()
@@ -83,6 +83,10 @@ public class DZDataAnalytics {
         
         let currentAppVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
         AppData.shared.keychain.set(currentAppVersion, forKey: AppData.Keys.appVersion.rawValue)
+        
+        if let adjustToken {
+            AdjustManager.shared.configureAdjust(appToken: adjustToken)
+        }
         
         return installState
     }

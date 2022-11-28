@@ -12,6 +12,7 @@ import AdServices
 import Foundation
 import FirebaseAnalytics
 import Firebase
+import Adjust
 
 extension String {
     
@@ -160,6 +161,7 @@ extension DZDataAnalytics {
         if #available(iOS 14, *) {
             guard didRequestAdAttribution() == false else { completion?(); return }
             ATTrackingManager.requestTrackingAuthorization { status in
+                AdjustManager.shared.checkForNewAttStatus()
                 switch status {
                 case .authorized:
                     getAttribution()
