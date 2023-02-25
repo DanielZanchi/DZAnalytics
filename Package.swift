@@ -16,9 +16,9 @@ let package = Package(
     dependencies: [
         .package(name: "SwiftyStoreKit", url: "https://github.com/bizz84/SwiftyStoreKit.git", from: "0.16.4"),
         .package(name: "SwiftKeychainWrapper", url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1"),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.1.0"),
-        .package(url: "https://github.com/adjust/ios_sdk", branch: "master"),
-        .package(url: "https://github.com/facebook/facebook-ios-sdk", from: "15.1.0")
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.5.0"),
+		.package(url: "https://github.com/adjust/ios_sdk", from: "4.33.4"),
+        .package(url: "https://github.com/facebook/facebook-ios-sdk", from: "16.0.0")
     ],
     targets: [
         .target(
