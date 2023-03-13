@@ -13,6 +13,7 @@ import Foundation
 import FirebaseAnalytics
 import Firebase
 import Adjust
+import FacebookLogin
 
 extension String {
     

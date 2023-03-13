@@ -30,7 +30,8 @@ let package = Package(
                 .product(name: "SwiftyStoreKit", package: "SwiftyStoreKit"),
                 .product(name: "SwiftKeychainWrapper", package: "SwiftKeychainWrapper"),
                 .product(name: "Adjust", package: "ios_sdk"),
-                .product(name: "FacebookCore", package: "facebook-ios-sdk")
+                .product(name: "FacebookCore", package: "facebook-ios-sdk"),
+				.product(name: "FacebookLogin", package: "facebook-ios-sdk")
             ]),
     ]
 )
