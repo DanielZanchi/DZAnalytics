@@ -28,6 +28,11 @@ extension DZDataAnalytics {
     
     //This doesn't need the tracking auth from the user. If the user didn't give consent it will send a standard payload.s
     func sendSearchAdsAttribution(afterTrackingAuthorization: Bool = false) {
+		#if DEBUG
+		print("Not sending search ads attribution in DEBUG mode")
+		return;
+		#endif
+		
         DZAnalytics.sendEvent(withName: "ce_will_ask_ad_attribution", parameters: [
             "cp_ios_version": UIDevice.current.systemVersion
         ], removingDefault: false)
