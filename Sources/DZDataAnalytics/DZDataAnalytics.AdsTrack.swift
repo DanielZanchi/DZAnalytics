@@ -134,6 +134,15 @@ extension DZDataAnalytics {
         task.resume()
     }
     
+	@available(iOS 13.0.0, *)
+	public func requestiAdAttribution() async {
+		return await withCheckedContinuation({ continuation in
+			requestiAdAttribution {
+				continuation.resume(returning: ())
+			}
+		})
+	}
+	
     /// if calling this you should add this to info.plist: "NSUserTrackingUsageDescription" : "Use you device information for performance statistics to improve product stability"
     public func requestiAdAttribution(completion: (() -> Void)? = nil) {
         func getAttribution() {
