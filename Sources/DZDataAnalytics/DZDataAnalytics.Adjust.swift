@@ -11,12 +11,11 @@ import FacebookCore
 
 public struct AdjSetup {
 	let appToken: String
-	let withASA: Bool = false
-	let startupDelay: Double = 6.5
+	let withASA: Bool = true
+	let startupDelay: Double = 2
 }
 
 class AdjustManager: NSObject {
-	
 	
 	var didSetupAdjust = false
 	static let shared = AdjustManager()
