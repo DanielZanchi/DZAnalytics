@@ -44,7 +44,7 @@ public class DZDataAnalytics {
 		let installState = self.logFirstOpen()
 		try? await Task.sleep(nanoseconds: 800_000_000)
 		await requestiAdAttribution()
-		AdjustManager.shared.configureAdjust(adjustConfiguration)
+		configureAdjust(adjustConfiguration)
 		getAndSendReceipt(withSharedKey: sharedKey)
 		return installState
 	}
@@ -102,6 +102,10 @@ public class DZDataAnalytics {
         
         return installState
     }
+	
+	public func configureAdjust(_ adjustConfiguration: AdjSetup) {
+		AdjustManager.shared.configureAdjust(adjustConfiguration)
+	}
     
     func setDefaultParams() {
         Analytics.setUserID(AnalyticsVars.keychainID)
