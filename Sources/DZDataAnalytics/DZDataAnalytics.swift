@@ -32,6 +32,22 @@ public class DZDataAnalytics {
     private init() {
         AppData.shared.getData()
     }
+	
+	/// Starts the flow sending session and install events. Asks for attribution after 1 second. Setups of Adjust and fetches the receipt.
+	/// - Parameters:
+	///   - adjustConfiguration: configuration for adjust. Usually passing the token is all we need
+	///   - sharedKey: shared key generated from App Store Connect to fetch and decript the receipt from the app store and have first installed version
+	/// - Returns: install state
+	@available(iOS 13.0.0, *)
+	@discardableResult
+	public func startupFlow(adjustConfiguration: AdjSetup, sharedKey: String) async -> InstallState {
+		let installState = self.logFirstOpen()
+		try? await Task.sleep(nanoseconds: 800_000_000)
+		await requestiAdAttribution()
+		AdjustManager.shared.configureAdjust(adjustConfiguration)
+		getAndSendReceipt(withSharedKey: sharedKey)
+		return installState
+	}
     
     @discardableResult
 	public func logFirstOpen() -> InstallState {
