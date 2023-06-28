@@ -11,8 +11,14 @@ import FacebookCore
 
 public struct AdjSetup {
 	let appToken: String
-	let withASA: Bool = true
-	let startupDelay: Double = 2
+	var withASA: Bool = true
+	var startupDelay: Double = 2
+	
+	public init(appToken: String, withASA: Bool = true, startupDelay: Double = 2) {
+		self.appToken = appToken
+		self.withASA = withASA
+		self.startupDelay = startupDelay
+	}
 }
 
 class AdjustManager: NSObject {
